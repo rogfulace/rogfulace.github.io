@@ -4,199 +4,200 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DMEC | Death Investigation Report</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
   <style>
-    body { background-color: #242a2f; color: white; }
-    label { font-weight: bold; margin-top: 8px; }
-    pre { background: #111; padding: 10px; border-radius: 6px; color: #0f0; white-space: pre-wrap; }
+    body { background-color: #242a2f; }
   </style>
 </head>
+
 <body>
-  <div class="container mt-5">
-    <form id="deathReportForm">
-      <div class="row">
-        <!-- Left Column: Form -->
-        <div class="col-md-6">
-          <div class="card bg-dark text-light">
-            <div class="card-body">
-              <center>
-                <h5 class="card-title">Los Santos County Department of Medical Examiner-Coroner</h5>
-                <img src="https://cdn.discordapp.com/attachments/465675591538966548/1120088728455614614/coroner.png" width="150px">
-              </center>
-
-              <div class="form-group">
-                <label for="jobtitle">Job Classification</label>
-                <select class="form-control" id="jobtitle" name="jobtitle" required>
-                  <option value="" disabled selected>Please Select</option>
-                  <option value="Forensic Attendant">Forensic Attendant</option>
-                  <option value="Coroner Investigator">Coroner Investigator</option>
-                  <option value="Medical Examiner">Medical Examiner</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="typeofdeath">Type of Death</label>
-                <select class="form-control" id="typeofdeath" name="typeofdeath" required>
-                  <option value="" disabled selected>Please Select</option>
-                  <option value="CK">CK</option>
-                  <option value="PK">PK</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="datetime">Date</label>
-                <input type="date" id="datetime" name="datetime" class="form-control" required>
-              </div>
-
-              <div class="form-group">
-                <label for="time">Time of Report</label>
-                <input type="time" id="time" name="time" class="form-control" required>
-              </div>
-
-              <div class="form-group">
-                <label for="coronername">Handling Coroner</label>
-                <input type="text" id="coronername" name="coronername" class="form-control" placeholder="Coroner(s) Names" required>
-              </div>
-
-              <div class="form-group">
-                <label for="requestingagency">Requesting Agency</label>
-                <select class="form-control" id="requestingagency" name="requestingagency" required>
-                  <option value="" disabled selected>Please Select</option>
-                  <option value="Los Santos Fire Department">LSFD</option>
-                  <option value="Los Santos Police Department">LSPD</option>
-                  <option value="Los Santos Sheriff's Department">LSSD</option>
-                  <option value="Pillbox Hill Medical Center">PHMC</option>
-                  <option value="San Andreas Park Rangers">SAPR</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="coronerbadge">Coroner Serial Number</label>
-                <input type="number" id="coronerbadge" name="coronerbadge" class="form-control" required>
-              </div>
-
-              <div class="form-group">
-                <label for="victimname">Victim</label>
-                <input type="text" id="victimname" name="victimname" class="form-control" placeholder="John Doe" required>
-              </div>
-
-              <div class="form-group">
-                <label for="victimnameooc">Victim Name ((OOC))</label>
-                <input type="text" id="victimnameooc" name="victimnameooc" class="form-control" placeholder="John Doe" required>
-              </div>
-
-              <div class="form-group">
-                <label for="timeofdeath">Pronounced Time of Death</label>
-                <input type="time" id="timeofdeath" name="timeofdeath" class="form-control" required>
-              </div>
-
-              <div class="form-group">
-                <label for="placeofdeath">Place of Death</label>
-                <input type="text" id="placeofdeath" name="placeofdeath" class="form-control" placeholder="Los Santos" required>
-              </div>
-
-              <div class="form-group">
-                <label for="causeofdeath">Probable Cause of Death</label>
-                <textarea class="form-control" id="causeofdeath" name="causeofdeath" required></textarea>
-              </div>
-
-              <div class="form-group">
-                <label for="mannerofdeath">Manner of Death</label>
-                <select class="form-control" id="mannerofdeath" name="mannerofdeath" required>
-                  <option value="" disabled selected>Please Select</option>
-                  <option value="Natural">Natural</option>
-                  <option value="Accident">Accident</option>
-                  <option value="Suicide">Suicide</option>
-                  <option value="Homicide">Homicide</option>
-                  <option value="Undetermined">Undetermined</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="narrative">Synopsis</label>
-                <textarea class="form-control" id="narrative" name="narrative" required></textarea>
-              </div>
-
-              <div class="form-group">
-                <label for="images">Scene Photography (comma separated)</label>
-                <textarea class="form-control" id="images" name="images"></textarea>
-              </div>
-
-              <div class="form-group">
-                <label for="morguescreen">Morgue Screen / Injuries / DNA Screenshots</label>
-                <textarea class="form-control" id="morguescreen" name="morguescreen"></textarea>
-              </div>
-
-              <button type="submit" class="btn btn-success mt-3">Generate BBCode</button>
-            </div>
+<div class="container mt-5">
+  <div class="row">
+    <!-- LEFT COLUMN FORM -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <center><h5 class="card-title">Los Santos County Department of Medical Examiner-Coroner</h5></center>
+          <center><img src="https://cdn.discordapp.com/attachments/465675591538966548/1120088728455614614/coroner.png" width="150px"></center>
+          
+          <!-- JOB TITLE -->
+          <div class="form-group">
+            <label for="jobtitle">Job Classification</label>
+            <select class="form-control" id="jobtitle">
+              <option value="" selected disabled>Please Select</option>
+              <option value="F">Forensic Attendant</option>
+              <option value="C">Coroner Investigator</option>
+              <option value="M">Medical Examiner</option>
+            </select>
           </div>
-        </div>
+          
+          <!-- TYPE OF DEATH -->
+          <div class="form-group">
+            <label for="typeofdeath">Type of Death</label>
+            <select class="form-control" id="typeofdeath">
+              <option value="" selected disabled>Please Select</option>
+              <option value="CK">CK</option>
+              <option value="PK">PK</option>
+            </select>
+          </div>
 
-        <!-- Right Column: Preview -->
-        <div class="col-md-6">
-          <div class="card bg-light text-dark">
-            <div class="card-body">
-              <h5 class="card-title">Generated BBCode</h5>
-              <pre id="bbcodePreview">(Fill out the form to generate BBCode...)</pre>
-              <button type="button" class="btn btn-primary mt-3" id="copyBtn">Copy BBCode</button>
-            </div>
+          <!-- DATE + TIME -->
+          <div class="form-group">
+            <label for="datetime">Date</label>
+            <input type="text" id="datetime" class="form-control" style="text-transform: uppercase;" placeholder="DD/MMM/YYYY">
+          </div>
+          <div class="form-group">
+            <label for="time">Time of Report</label>
+            <input type="text" id="time" class="form-control" style="text-transform: uppercase;" placeholder="HH:MM">
+          </div>
+
+          <!-- CORONER -->
+          <div class="form-group">
+            <label for="coronername">Handling Coroner</label>
+            <input type="text" id="coronername" class="form-control" placeholder="Coroner(s) Names">
+          </div>
+
+          <!-- REQUESTING AGENCY -->
+          <div class="form-group">
+            <label for="requestingagency">Requesting Agency</label>
+            <select class="form-control" id="requestingagency">
+              <option value="" selected disabled>Please Select</option>
+              <option value="FD">LSFD</option>
+              <option value="PD">LSPD</option>
+              <option value="SD">LSSD</option>
+              <option value="PHMC">PHMC</option>
+              <option value="PR">SAPR</option>
+            </select>
+          </div>
+
+          <!-- BADGE + VICTIM -->
+          <div class="form-group">
+            <label for="coronerbadge">Coroner Serial Number</label>
+            <input type="text" id="coronerbadge" class="form-control" placeholder="Coroner(s) Serial Numbers">
+          </div>
+          <div class="form-group">
+            <label for="victimname">Victim</label>
+            <input type="text" id="victimname" class="form-control" placeholder="John Doe">
+          </div>
+          <div class="form-group">
+            <label for="victimnameooc">Victim Name ((OOC))</label>
+            <input type="text" id="victimnameooc" class="form-control" placeholder="John Doe">
+          </div>
+
+          <!-- DEATH DETAILS -->
+          <div class="form-group">
+            <label for="timeofdeath">Pronounced Time of Death</label>
+            <input type="text" id="timeofdeath" class="form-control" style="text-transform: uppercase;" placeholder="HH:MM">
+          </div>
+          <div class="form-group">
+            <label for="placeofdeath">Place of Death</label>
+            <input type="text" id="placeofdeath" class="form-control" placeholder="Los Santos">
+          </div>
+          <div class="form-group">
+            <label for="causeofdeath">Probable Cause of Death</label>
+            <textarea class="form-control" id="causeofdeath"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="mannerofdeath">Manner of Death</label>
+            <select class="form-control" id="mannerofdeath">
+              <option value="" selected disabled>Please Select</option>
+              <option value="Natural">Natural</option>
+              <option value="Accident">Accident</option>
+              <option value="Suicide">Suicide</option>
+              <option value="Homicide">Homicide</option>
+              <option value="Undetermined">Undetermined</option>
+            </select>
+          </div>
+
+          <!-- SYNOPSIS -->
+          <div class="form-group">
+            <label for="narrative">Synopsis</label>
+            <textarea class="form-control" id="narrative"></textarea>
+          </div>
+
+          <!-- IMAGES -->
+          <div class="form-group">
+            <label for="images">Scene Photography (comma separated)</label>
+            <textarea class="form-control" id="images"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="morguescreen">Morgue Screen, CInjuries, CDNA (comma separated)</label>
+            <textarea class="form-control" id="morguescreen"></textarea>
           </div>
         </div>
       </div>
-    </form>
-    <p class="text-center mt-3">Coded with Love ❤️ by ThePlod</p>
+    </div>
+
+    <!-- RIGHT COLUMN BBCode -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <button class="btn btn-secondary mt-3" onclick="copy_data('bbtitle')">Copy Title</button>
+          <button class="btn btn-primary mt-3" onclick="copy_data('bbcode')">Copy Code</button>
+
+          <h5 class="card-title">Report Title</h5>
+          <p id="bbtitle">[<span id="deathText1">CK</span>] - <span id="victimText1">JOHN DOE</span> ((<span id="victimnameoocText">JOHN DOE</span>)) - <span id="datetimetext1">02/SEP/2025</span></p>
+
+          <h5 class="card-title">Copy BBCode</h5>
+          <pre id="bbcode" style="white-space: pre-wrap; font-size: 12px;"></pre>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
 
-  <script>
-    const form = document.getElementById("deathReportForm");
-    const preview = document.getElementById("bbcodePreview");
-    const copyBtn = document.getElementById("copyBtn");
+<script>
+$(document).ready(function(){
+  // Set default date
+  var currentDate = moment.utc().format('DD/MMM/YYYY').toUpperCase();
+  $("#datetime").val(currentDate);
+  $("#datetimetext1").text(currentDate);
+  $("#datetimetext2").text(currentDate);
 
-    form.addEventListener("input", generateBBCode);
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      generateBBCode();
-    });
+  function updateBBCode() {
+    let bb = `[divbox=white][img]https://cdn.discordapp.com/attachments/742936416832585728/971008079586009138/165157674249549858.png[/img]
+[aligntable=right,0,000,0,0,0,transparent][size=90]OPERATIONS DIVISION
+DECEDENT SERVICES
+[hr][/hr][/aligntable]
 
-    function generateBBCode() {
-      const data = Object.fromEntries(new FormData(form).entries());
-      if (!data.victimname) return;
-
-      // Convert comma-separated images to [img] tags
-      const sceneImgs = (data.images || "").split(",").filter(i => i.trim() !== "").map(i => `[img]${i.trim()}[/img]`).join("\n");
-      const morgueImgs = (data.morguescreen || "").split(",").filter(i => i.trim() !== "").map(i => `[img]${i.trim()}[/img]`).join("\n");
-
-      const bbcode = `[divbox=white][img]https://cdn.discordapp.com/attachments/742936416832585728/971008079586009138/165157674249549858.png[/img]
-
-[center][b]DEATH INVESTIGATION REPORT[/b][/center]
+[center] DEATH INVESTIGATION REPORT[/center]
 [hr][/hr]
 
-[b]Victim:[/b] ${data.victimname} (( ${data.victimnameooc} ))  
-[b]Date:[/b] ${data.datetime} at ${data.time}  
-[b]Coroner:[/b] ${data.coronername} [${data.coronerbadge}]  
-[b]Agency:[/b] ${data.requestingagency}  
-[b]Type of Death:[/b] ${data.typeofdeath}  
-[b]Manner of Death:[/b] ${data.mannerofdeath}  
-[b]Cause of Death:[/b] ${data.causeofdeath}  
-[b]Place of Death:[/b] ${data.placeofdeath}  
-[b]Time of Death:[/b] ${data.timeofdeath}  
+[center][b]A. WRITTEN REPORT[/b][/center]
 
-[b]Synopsis:[/b]  
-${data.narrative}
+The County Coroner's Office was called regarding the decease at [b]${$("#placeofdeath").val() || "[Place of Death]"}[/b]. Upon receiving the call from [b]${$("#requestingagencyText").text() || "[Requesting Agency]"}[/b], a ${$("#jobText1").text()} was dispatched on [b]${$("#datetime").val()}[/b] at [b]${$("#time").val()}[/b].
 
-[center][b]Scene Photography[/b][/center]  
-${sceneImgs || "None provided"}
+${$("#jobText2").text()}, [b]${$("#coronername").val()}[/b], Serial Number [b]${$("#coronerbadge").val()}[/b], identified the victim as [b]${$("#victimname").val()}[/b], pronounced dead at [b]${$("#timeofdeath").val()}[/b]. Synopsis: ${$("#narrative").val()}
 
-[center][b]Morgue / Injuries / DNA[/b][/center]  
-${morgueImgs || "None provided"}[/divbox]`;
+Probable cause: [b]${$("#causeofdeath").val()}[/b]. Manner: [b]${$("#mannerofdeath").val()}[/b].
 
-      preview.textContent = bbcode;
-    }
+[center][b]B. PHOTOGRAPHIC RECORD[/b][/center]
+[customspoiler=SCENE PHOTOGRAPHY]${$("#images").val().split(",").map(x=>`[img]${x.trim()}[/img]`).join("")}[/customspoiler]
 
-    copyBtn.addEventListener("click", () => {
-      navigator.clipboard.writeText(preview.textContent).then(() => {
-        alert("BBCode copied to clipboard!");
-      });
-    });
-  </script>
+[divbox=transparent][center][b][u](( OUT OF CHARACTER ))[/u][/b][/center][hr][/hr]
+This was a ${$("#typeofdeath").val()}.
+Morgue: ${$("#morguescreen").val().split(",").map(x=>`[img]${x.trim()}[/img]`).join("")}[/divbox]`;
+    
+    $("#bbcode").text(bb);
+  }
+
+  // Attach events
+  $("input, textarea, select").on("input change", updateBBCode);
+  updateBBCode();
+});
+
+// Copy function
+function copy_data(id) {
+  let el = document.getElementById(id);
+  let range = document.createRange();
+  range.selectNode(el);
+  window.getSelection().removeAllRanges();
+  window.getSelection().addRange(range);
+  document.execCommand("copy");
+  window.getSelection().removeAllRanges();
+  alert("Copied!");
+}
+</script>
 </body>
 </html>
