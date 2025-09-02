@@ -1,119 +1,95 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Death Investigation Report Generator</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
-  <div class="bg-white rounded-2xl shadow-lg w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
+<script>
+    $(document).ready(function(){
+        var date = moment.utc();
+        var currentDate2 = date.format('DD/MMM/YYYY').toUpperCase();
+        $("#datetime").val(currentDate2);
+        $("#datetimetext1").text(currentDate2);
+        $("#datetimetext2").text(currentDate2);
 
-    <!-- Left side -->
-    <div class="flex flex-col space-y-4">
-      <h2 class="text-2xl font-bold text-gray-800">Report Generator</h2>
+        // General live update function
+        function bindUpdate(inputId, targetId) {
+            $("#" + inputId).on("input", function() {
+                $("#" + targetId).text($(this).val());
+            });
+        }
 
-      <!-- Title input -->
-      <div>
-        <label class="block text-sm font-semibold text-gray-600 mb-1">Report Title</label>
-        <input type="text" id="titleInput" value="DEATH INVESTIGATION REPORT"
-               class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300">
-        <button onclick="copyTitle()" 
-                class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg text-sm">
-          Copy Title
-        </button>
-      </div>
+        bindUpdate("coronername", "coronertext");
+        bindUpdate("victimname", "victimText1");
+        bindUpdate("victimname", "victimText2");
+        bindUpdate("victimnameooc", "victimnameoocText");
+        bindUpdate("placeofdeath", "placeofdeathText");
+        bindUpdate("coronerbadge", "badgetext");
+        bindUpdate("datetime", "datetimetext1");
+        bindUpdate("datetime", "datetimetext2");
+        bindUpdate("time", "timeText");
+        bindUpdate("timeofdeath", "timeofdeathText");
+        bindUpdate("causeofdeath", "causeofdeathText");
 
-      <!-- BBCode input -->
-      <div class="flex-1">
-        <label class="block text-sm font-semibold text-gray-600 mb-1">BBCode</label>
-        <textarea id="bbcodeInput" rows="20"
-                  class="w-full border rounded-lg px-3 py-2 font-mono text-sm focus:outline-none focus:ring focus:ring-blue-300"></textarea>
-        <button onclick="copyBBCode()" 
-                class="mt-2 bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg text-sm">
-          Copy BBCode
-        </button>
-      </div>
-    </div>
+        // Narrative textarea
+        $("#narrative").on("input", function(){
+            $("#narrativeText").text($(this).val());
+        });
 
-    <!-- Right side -->
-    <div class="flex flex-col">
-      <h2 class="text-2xl font-bold text-gray-800 mb-2">Live Preview</h2>
-      <div id="preview" class="flex-1 border rounded-lg bg-gray-50 p-4 overflow-auto text-sm"></div>
-    </div>
+        // Scene Photography
+        $("#images").on("input", function(){
+            let allimgs = $(this).val().split(",").map(i => `[img]${i.trim()}[/img]`).join("");
+            $("#imgs").text(allimgs);
+        });
 
-  </div>
+        // Morgue screen
+        $("#morguescreen").on("input", function(){
+            let allimgs = $(this).val().split(",").map(i => `[img]${i.trim()}[/img]`).join("");
+            $("#morguescreenText").text(allimgs);
+        });
 
-  <script>
-    const defaultBBCode = `[divbox=white][img]https://cdn.discordapp.com/attachments/742936416832585728/971008079586009138/165157674249549858.png[/img]
-[aligntable=right,0,000,0,0,0,transparent][size=90]OPERATIONS DIVISION DECEDENT SERVICES
-[hr][/hr][/aligntable]
+        // Type of Death
+        $("#typeofdeath").on("change", function(){
+            let v = $(this).val();
+            $("#deathText1, #deathText2").text(v);
+        });
 
-[center]DEATH INVESTIGATION REPORT[/center]
-[hr][/hr]
+        // Job title
+        $("#jobtitle").on("change", function(){
+            let roles = {
+                "F": "Forensic Attendant",
+                "C": "Coroner Investigator",
+                "M": "Medical Examiner"
+            };
+            let r = roles[$(this).val()];
+            $("#jobText1, #jobText2, #jobText3, #jobText4").text(r);
+        });
 
-[center][b]A. WRITTEN REPORT[/b][/center]
-[list=none][color=transparent]spacer[/color]
-The County Coroner's Office has been called regarding the decease that occurred at the location of [b][Place of Death][/b]. Upon receiving the call from the [b][Requesting Department][/b], Coroner's Office dispatched a Forensic Attendant to the crime scene to conduct an investigation on the [b]02/SEP/2025[/b] at [b][Time of Report][/b].
+        // Manner of Death
+        $("#mannerofdeath").on("change", function(){
+            let modes = {
+                "N": "Natural",
+                "A": "Accident",
+                "S": "Suicide",
+                "H": "Homicide",
+                "U": "Undetermined"
+            };
+            $("#mannerofdeathText").text(modes[$(this).val()]);
+        });
 
-The Forensic Attendant, [b][Coroner Name][/b], Serial Number [b][Serial Number][/b], arrived at the scene and identified the individual as [b][Decedent's Name][/b], who was pronounced dead at [b][Pronounced Time of Death][/b]. Following an initial investigation, the Forensic Attendant came up with the following [b]synopsis[/b]:
-[Synopsis of events leading to death, personal opinion must be excluded]
+        // Requesting Agency
+        $("#requestingagency").on("change", function(){
+            let agencies = {
+                "FD": "Los Santos Fire Department",
+                "PD": "Los Santos Police Department",
+                "SD": "Los Santos Sheriff's Department",
+                "PR": "San Andreas Park Rangers",
+                "PHMC": "Pillbox Hill Medical Center"
+            };
+            $("#requestingagencyText").text(agencies[$(this).val()]);
+        });
+    });
 
-Based on the information gathered from the scene investigation and the decedent's medical history (if available), the probable cause of death was determined to be [b][Cause of Death][/b]. The manner of death was classified as [b][Manner of Death][/b].
-[/list]
-
-[list=none][color=transparent]spacer[/color]
-[center][b]B. PHOTOGRAPHIC DOCUMENTARY RECORD[/b][/center]
-[customspoiler=SCENE PHOTOGRAPHY][img]imagehere[/img][/customspoiler]
-
-[divbox=transparent][center][color=Black][size=85][b][u](( OUT OF CHARACTER ))[/u][/b][/size][/center][/color]
-[hr][/hr]
-[size=75]This section clarifies whether or not the player was character killed (CK) or player killed (PK). In this case the player was: [b][CK/PK][/b].
-
-[morgue screen, cinjuries, cdna links:]
-[MORGUE SCREEN, CINJURIES, CDNA IMGUR LINKS][/size][/divbox]
-
-[center][b]C. STATEMENT[/b][/center]
-[divbox=transparent][center][color=Black][size=85]As a Forensic Attendant, I have made detailed notes of my findings and conclusions, and these notes are available for review if necessary. These notes do not contain any personal opinions and are solely based on the evidence and facts available to me.
-
-In conclusion, I hope that this report provides the necessary information required for the agency to move forward with any necessary actions. Please let me know if you require any additional information or if I can be of further assistance.
-
-I certify that the information contained in this report is true and accurate to the best of my knowledge and belief. I have reviewed the report and ensured that all information included is complete and accurate.[/size][/divbox]
-
-[center][b]D. PRIVACY AND CONFIDENTIALITY[/b][/center]
-[divbox=transparent][center][color=Black][size=85]This document from the Department of Medical Examiner-Coroner certifies the authenticity of the information contained within. Any unauthorized distribution or use of this information is in violation of the Health Insurance Portability and Accountability Act (HIPAA), as well as state and federal privacy laws, including but not limited to the San Andreas Confidentiality of Medical Information Act (CMIA) and the San Andreas Information Practices Act (IPA).
-
-It is imperative that all parties handling this document respect the privacy and confidentiality of the decedent and their family. Any violation of these laws may result in legal action being taken against the responsible parties.
-
-This document is provided for official purposes only and is not to be construed as legal advice or medical diagnosis. If additional information or clarification is needed, please contact the Department of Medical Examiner-Coroner.[/size][/divbox]`;
-
-    document.getElementById("bbcodeInput").value = defaultBBCode;
-
-    function copyTitle() {
-      const title = document.getElementById("titleInput").value;
-      navigator.clipboard.writeText(title).then(() => alert("Title copied!"));
+    // Fix copy to include plain text with line breaks
+    function copy_data(containerid) {
+        let el = (typeof containerid === "string") ? document.getElementById(containerid) : containerid;
+        let text = el.innerText.replace(/\u00A0/g, " "); // clean nbsp
+        navigator.clipboard.writeText(text).then(() => {
+            alert("BBCode Copied");
+        });
     }
-
-    function copyBBCode() {
-      const bbcode = document.getElementById("bbcodeInput").value;
-      navigator.clipboard.writeText(bbcode).then(() => alert("BBCode copied!"));
-    }
-
-    function updatePreview() {
-      let text = document.getElementById("bbcodeInput").value;
-      // Convert simple BBCode to HTML for preview (basic only)
-      text = text
-        .replace(/\[b\](.*?)\[\/b\]/g, "<strong>$1</strong>")
-        .replace(/\[u\](.*?)\[\/u\]/g, "<u>$1</u>")
-        .replace(/\[i\](.*?)\[\/i\]/g, "<em>$1</em>")
-        .replace(/\[center\](.*?)\[\/center\]/gs, "<div style='text-align:center;'>$1</div>")
-        .replace(/\[hr\]/g, "<hr>")
-        .replace(/\[img\](.*?)\[\/img\]/g, "<img src='$1' class='mx-auto my-2 max-w-full'>")
-        .replace(/\[list=none\](.*?)\[\/list\]/gs, "<div>$1</div>");
-      document.getElementById("preview").innerHTML = text;
-    }
-
-    document.getElementById("bbcodeInput").addEventListener("input", updatePreview);
-    updatePreview();
-  </script>
-</body>
-</html>
+</script>
