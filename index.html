@@ -1,53 +1,47 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Death Investigation Report Generator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background: #f4f4f4;
-    }
-    h2 {
-      margin-top: 0;
-    }
-    textarea, input {
-      width: 100%;
-      padding: 8px;
-      margin: 5px 0 15px;
-      font-family: monospace;
-    }
-    button {
-      margin-right: 10px;
-      padding: 8px 12px;
-      cursor: pointer;
-    }
-    .preview {
-      border: 1px solid #ccc;
-      background: #fff;
-      padding: 15px;
-      white-space: pre-wrap;
-      overflow-wrap: break-word;
-    }
-  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+  <div class="bg-white rounded-2xl shadow-lg w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
 
-  <h2>Death Investigation Report Generator</h2>
+    <!-- Left side -->
+    <div class="flex flex-col space-y-4">
+      <h2 class="text-2xl font-bold text-gray-800">Report Generator</h2>
 
-  <label><b>Report Title</b></label>
-  <input type="text" id="titleInput" placeholder="Enter report title here" 
-         value="DEATH INVESTIGATION REPORT">
+      <!-- Title input -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-600 mb-1">Report Title</label>
+        <input type="text" id="titleInput" value="DEATH INVESTIGATION REPORT"
+               class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300">
+        <button onclick="copyTitle()" 
+                class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg text-sm">
+          Copy Title
+        </button>
+      </div>
 
-  <button onclick="copyTitle()">Copy Title</button>
-  <br><br>
+      <!-- BBCode input -->
+      <div class="flex-1">
+        <label class="block text-sm font-semibold text-gray-600 mb-1">BBCode</label>
+        <textarea id="bbcodeInput" rows="20"
+                  class="w-full border rounded-lg px-3 py-2 font-mono text-sm focus:outline-none focus:ring focus:ring-blue-300"></textarea>
+        <button onclick="copyBBCode()" 
+                class="mt-2 bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg text-sm">
+          Copy BBCode
+        </button>
+      </div>
+    </div>
 
-  <label><b>BBCode</b></label>
-  <textarea id="bbcodeInput" rows="25"></textarea>
-  <button onclick="copyBBCode()">Copy BBCode</button>
+    <!-- Right side -->
+    <div class="flex flex-col">
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">Live Preview</h2>
+      <div id="preview" class="flex-1 border rounded-lg bg-gray-50 p-4 overflow-auto text-sm"></div>
+    </div>
 
-  <h3>Live Preview</h3>
-  <div class="preview" id="preview"></div>
+  </div>
 
   <script>
     const defaultBBCode = `[divbox=white][img]https://cdn.discordapp.com/attachments/742936416832585728/971008079586009138/165157674249549858.png[/img]
@@ -113,7 +107,8 @@ This document is provided for official purposes only and is not to be construed 
         .replace(/\[i\](.*?)\[\/i\]/g, "<em>$1</em>")
         .replace(/\[center\](.*?)\[\/center\]/gs, "<div style='text-align:center;'>$1</div>")
         .replace(/\[hr\]/g, "<hr>")
-        .replace(/\[img\](.*?)\[\/img\]/g, "<img src='$1' style='max-width:100%;'>");
+        .replace(/\[img\](.*?)\[\/img\]/g, "<img src='$1' class='mx-auto my-2 max-w-full'>")
+        .replace(/\[list=none\](.*?)\[\/list\]/gs, "<div>$1</div>");
       document.getElementById("preview").innerHTML = text;
     }
 
