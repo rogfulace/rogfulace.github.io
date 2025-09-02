@@ -3,141 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <title>Death Investigation Report Generator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      padding: 20px;
-    }
-    h2 {
-      margin-bottom: 10px;
-    }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 10px;
-    }
-    input, textarea, button {
-      width: 100%;
-      margin: 5px 0;
-      padding: 10px;
-      font-size: 14px;
-    }
-    textarea {
-      height: 500px;
-      white-space: pre;
-    }
-    button {
-      width: auto;
-      cursor: pointer;
-      margin-right: 10px;
-      background: #222;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-    }
-    button:hover {
-      background: #444;
-    }
-    .form-section {
-      background: #fff;
-      padding: 15px;
-      margin-bottom: 20px;
-      border-radius: 6px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <h2>Death Investigation Report Generator</h2>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+  <div class="bg-white rounded-2xl shadow-lg w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
 
-  <!-- Input Section -->
-  <div class="form-section">
-    <label for="titleField">Report Title</label>
-    <input type="text" id="titleField" placeholder="Enter report title...">
+    <!-- Left side -->
+    <div class="flex flex-col space-y-4">
+      <h2 class="text-2xl font-bold text-gray-800">Report Generator</h2>
 
-    <label for="placeOfDeath">Place of Death</label>
-    <input type="text" id="placeOfDeath">
+      <!-- Title input -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-600 mb-1">Report Title</label>
+        <input type="text" id="titleInput" value="DEATH INVESTIGATION REPORT"
+               class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300">
+        <button onclick="copyTitle()" 
+                class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg text-sm">
+          Copy Title
+        </button>
+      </div>
 
-    <label for="requestingDept">Requesting Department</label>
-    <input type="text" id="requestingDept">
+      <!-- BBCode input -->
+      <div class="flex-1">
+        <label class="block text-sm font-semibold text-gray-600 mb-1">BBCode</label>
+        <textarea id="bbcodeInput" rows="20"
+                  class="w-full border rounded-lg px-3 py-2 font-mono text-sm focus:outline-none focus:ring focus:ring-blue-300"></textarea>
+        <button onclick="copyBBCode()" 
+                class="mt-2 bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg text-sm">
+          Copy BBCode
+        </button>
+      </div>
+    </div>
 
-    <label for="reportDate">Date of Report</label>
-    <input type="text" id="reportDate" placeholder="e.g. 02/SEP/2025">
+    <!-- Right side -->
+    <div class="flex flex-col">
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">Live Preview</h2>
+      <div id="preview" class="flex-1 border rounded-lg bg-gray-50 p-4 overflow-auto text-sm"></div>
+    </div>
 
-    <label for="reportTime">Time of Report</label>
-    <input type="text" id="reportTime">
-
-    <label for="coronerName">Coroner Name</label>
-    <input type="text" id="coronerName">
-
-    <label for="serialNumber">Serial Number</label>
-    <input type="text" id="serialNumber">
-
-    <label for="decedentName">Decedent's Name</label>
-    <input type="text" id="decedentName">
-
-    <label for="timeOfDeath">Pronounced Time of Death</label>
-    <input type="text" id="timeOfDeath">
-
-    <label for="synopsis">Synopsis</label>
-    <textarea id="synopsis" placeholder="Enter neutral summary (no opinions)..."></textarea>
-
-    <label for="causeOfDeath">Cause of Death</label>
-    <input type="text" id="causeOfDeath">
-
-    <label for="mannerOfDeath">Manner of Death</label>
-    <input type="text" id="mannerOfDeath">
-
-    <label for="ckpk">CK/PK</label>
-    <input type="text" id="ckpk" placeholder="CK or PK">
-
-    <label for="morgueLinks">Morgue/Screen/Imgur Links</label>
-    <textarea id="morgueLinks"></textarea>
-
-    <button onclick="generateBBCode()">Generate BBCode</button>
-  </div>
-
-  <!-- Output Section -->
-  <div class="form-section">
-    <label for="bbcodeField">Generated BBCode</label>
-    <textarea id="bbcodeField"></textarea>
-    <button onclick="copyTitle()">Copy Title</button>
-    <button onclick="copyBBCode()">Copy BBCode</button>
   </div>
 
   <script>
-    function generateBBCode() {
-      const title = document.getElementById("titleField").value;
-      const place = document.getElementById("placeOfDeath").value;
-      const dept = document.getElementById("requestingDept").value;
-      const date = document.getElementById("reportDate").value;
-      const time = document.getElementById("reportTime").value;
-      const coroner = document.getElementById("coronerName").value;
-      const serial = document.getElementById("serialNumber").value;
-      const decedent = document.getElementById("decedentName").value;
-      const deathTime = document.getElementById("timeOfDeath").value;
-      const synopsis = document.getElementById("synopsis").value;
-      const cause = document.getElementById("causeOfDeath").value;
-      const manner = document.getElementById("mannerOfDeath").value;
-      const ckpk = document.getElementById("ckpk").value;
-      const morgue = document.getElementById("morgueLinks").value;
-
-      const bbcode = `[divbox=white][img]https://cdn.discordapp.com/attachments/742936416832585728/971008079586009138/165157674249549858.png[/img]
+    const defaultBBCode = `[divbox=white][img]https://cdn.discordapp.com/attachments/742936416832585728/971008079586009138/165157674249549858.png[/img]
 [aligntable=right,0,000,0,0,0,transparent][size=90]OPERATIONS DIVISION DECEDENT SERVICES
 [hr][/hr][/aligntable]
 
-[center]${title}[/center]
+[center]DEATH INVESTIGATION REPORT[/center]
 [hr][/hr]
 
 [center][b]A. WRITTEN REPORT[/b][/center]
 [list=none][color=transparent]spacer[/color]
-The County Coroner's Office has been called regarding the decease that occurred at the location of [b]${place}[/b]. Upon receiving the call from the [b]${dept}[/b], Coroner's Office dispatched a Forensic Attendant to the crime scene to conduct an investigation on the [b]${date}[/b] at [b]${time}[/b].
+The County Coroner's Office has been called regarding the decease that occurred at the location of [b][Place of Death][/b]. Upon receiving the call from the [b][Requesting Department][/b], Coroner's Office dispatched a Forensic Attendant to the crime scene to conduct an investigation on the [b]02/SEP/2025[/b] at [b][Time of Report][/b].
 
-The Forensic Attendant, [b]${coroner}[/b], Serial Number [b]${serial}[/b], arrived at the scene and identified the individual as [b]${decedent}[/b], who was pronounced dead at [b]${deathTime}[/b]. Following an initial investigation, the Forensic Attendant came up with the following [b]synopsis[/b]:  
-${synopsis}
+The Forensic Attendant, [b][Coroner Name][/b], Serial Number [b][Serial Number][/b], arrived at the scene and identified the individual as [b][Decedent's Name][/b], who was pronounced dead at [b][Pronounced Time of Death][/b]. Following an initial investigation, the Forensic Attendant came up with the following [b]synopsis[/b]:
+[Synopsis of events leading to death, personal opinion must be excluded]
 
-Based on the information gathered from the scene investigation and the decedent's medical history (if available), the probable cause of death was determined to be [b]${cause}[/b]. The manner of death was classified as [b]${manner}[/b].
+Based on the information gathered from the scene investigation and the decedent's medical history (if available), the probable cause of death was determined to be [b][Cause of Death][/b]. The manner of death was classified as [b][Manner of Death][/b].
 [/list]
 
 [list=none][color=transparent]spacer[/color]
@@ -146,41 +67,53 @@ Based on the information gathered from the scene investigation and the decedent'
 
 [divbox=transparent][center][color=Black][size=85][b][u](( OUT OF CHARACTER ))[/u][/b][/size][/center][/color]
 [hr][/hr]
-[size=75]This section clarifies whether or not the player was character killed (CK) or player killed (PK). In this case the player was: [b]${ckpk}[/b].
+[size=75]This section clarifies whether or not the player was character killed (CK) or player killed (PK). In this case the player was: [b][CK/PK][/b].
 
-[morgue screen, cinjuries, cdna links:]  
-${morgue}[/size][/divbox]
+[morgue screen, cinjuries, cdna links:]
+[MORGUE SCREEN, CINJURIES, CDNA IMGUR LINKS][/size][/divbox]
 
 [center][b]C. STATEMENT[/b][/center]
-[divbox=transparent][center][color=Black][size=85]As a Forensic Attendant, I have made detailed notes of my findings and conclusions, and these notes are available for review if necessary. These notes do not contain any personal opinions and are solely based on the evidence and facts available to me.  
+[divbox=transparent][center][color=Black][size=85]As a Forensic Attendant, I have made detailed notes of my findings and conclusions, and these notes are available for review if necessary. These notes do not contain any personal opinions and are solely based on the evidence and facts available to me.
 
-In conclusion, I hope that this report provides the necessary information required for the agency to move forward with any necessary actions. Please let me know if you require any additional information or if I can be of further assistance.  
+In conclusion, I hope that this report provides the necessary information required for the agency to move forward with any necessary actions. Please let me know if you require any additional information or if I can be of further assistance.
 
 I certify that the information contained in this report is true and accurate to the best of my knowledge and belief. I have reviewed the report and ensured that all information included is complete and accurate.[/size][/divbox]
 
 [center][b]D. PRIVACY AND CONFIDENTIALITY[/b][/center]
-[divbox=transparent][center][color=Black][size=85]This document from the Department of Medical Examiner-Coroner certifies the authenticity of the information contained within. Any unauthorized distribution or use of this information is in violation of the Health Insurance Portability and Accountability Act (HIPAA), as well as state and federal privacy laws, including but not limited to the San Andreas Confidentiality of Medical Information Act (CMIA) and the San Andreas Information Practices Act (IPA).  
+[divbox=transparent][center][color=Black][size=85]This document from the Department of Medical Examiner-Coroner certifies the authenticity of the information contained within. Any unauthorized distribution or use of this information is in violation of the Health Insurance Portability and Accountability Act (HIPAA), as well as state and federal privacy laws, including but not limited to the San Andreas Confidentiality of Medical Information Act (CMIA) and the San Andreas Information Practices Act (IPA).
 
-It is imperative that all parties handling this document respect the privacy and confidentiality of the decedent and their family. Any violation of these laws may result in legal action being taken against the responsible parties.  
+It is imperative that all parties handling this document respect the privacy and confidentiality of the decedent and their family. Any violation of these laws may result in legal action being taken against the responsible parties.
 
 This document is provided for official purposes only and is not to be construed as legal advice or medical diagnosis. If additional information or clarification is needed, please contact the Department of Medical Examiner-Coroner.[/size][/divbox]`;
 
-      document.getElementById("bbcodeField").value = bbcode;
-    }
+    document.getElementById("bbcodeInput").value = defaultBBCode;
 
     function copyTitle() {
-      const titleField = document.getElementById("titleField");
-      titleField.select();
-      document.execCommand("copy");
-      alert("Title copied!");
+      const title = document.getElementById("titleInput").value;
+      navigator.clipboard.writeText(title).then(() => alert("Title copied!"));
     }
 
     function copyBBCode() {
-      const bbcodeField = document.getElementById("bbcodeField");
-      bbcodeField.select();
-      document.execCommand("copy");
-      alert("BBCode copied!");
+      const bbcode = document.getElementById("bbcodeInput").value;
+      navigator.clipboard.writeText(bbcode).then(() => alert("BBCode copied!"));
     }
+
+    function updatePreview() {
+      let text = document.getElementById("bbcodeInput").value;
+      // Convert simple BBCode to HTML for preview (basic only)
+      text = text
+        .replace(/\[b\](.*?)\[\/b\]/g, "<strong>$1</strong>")
+        .replace(/\[u\](.*?)\[\/u\]/g, "<u>$1</u>")
+        .replace(/\[i\](.*?)\[\/i\]/g, "<em>$1</em>")
+        .replace(/\[center\](.*?)\[\/center\]/gs, "<div style='text-align:center;'>$1</div>")
+        .replace(/\[hr\]/g, "<hr>")
+        .replace(/\[img\](.*?)\[\/img\]/g, "<img src='$1' class='mx-auto my-2 max-w-full'>")
+        .replace(/\[list=none\](.*?)\[\/list\]/gs, "<div>$1</div>");
+      document.getElementById("preview").innerHTML = text;
+    }
+
+    document.getElementById("bbcodeInput").addEventListener("input", updatePreview);
+    updatePreview();
   </script>
 </body>
 </html>
