@@ -1,95 +1,405 @@
-<script>
-    $(document).ready(function(){
-        var date = moment.utc();
-        var currentDate2 = date.format('DD/MMM/YYYY').toUpperCase();
-        $("#datetime").val(currentDate2);
-        $("#datetimetext1").text(currentDate2);
-        $("#datetimetext2").text(currentDate2);
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+				<title>PHMC | Death Investigation Report</title>
+				<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+					<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+					<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+					<script src="moment.js"></script>
+					<style>
+    body { background-color: #242a2f; }
+</style>
+				</head>
+				<body>
+					<div class="container mt-5">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="card">
+									<div class="card-body">
+										<center>
+											<h5 class="card-title">Pillbox Hill Medical Center Department of Pathology & Forensic Medicine</h5>
+										</center>
+										<center>
+											<img src="https://i.imgur.com/Hxjt4M2.png" width="150px">
+											</center>
+											<div class="form-group">
+												<label for="jobtitle">Job Classification</label>
+												<select class="form-control" id="jobtitle" value="F">
+													<option value="" selected="" disabled="">Please Select</option>
+													<option value="F">Forensic Attendant</option>
+													<option value="C">Coroner Investigator</option>
+													<option value="M">Medical Examiner</option>
+												</select>
+											</div>
+											<div class="form-group">
+												<label for="typeofdeath">Type of Death</label>
+												<select class="form-control" id="typeofdeath" value="CK">
+													<option value="" selected="" disabled="">Please Select</option>
+													<option value="CK">CK</option>
+													<option value="PK">PK</option>
+												</select>
+											</div>
+											<div class="form-group">
+												<label for="datetime">Date</label>
+												<input type="text" id="datetime" style="text-transform: uppercase;" class="form-control" placeholder="DD/MMM/YYYY HH:MM">
+												</div>
+												<div class="form-group">
+													<label for="time">Time of Report</label>
+													<input type="text" id="time" style="text-transform: uppercase;" class="form-control" placeholder="HH:MM">
+													</div>
+													<div class="form-group">
+														<label for="coronername">Handling Coroner</label>
+														<input type="text" id="coronername" class="form-control" placeholder="Coroner(s) Names">
+														</div>
+														<div class="form-group">
+															<label for="requestingagency">Requesting Agency</label>
+															<select class="form-control" id="requestingagency">
+																<option value="" selected="" disabled="">Please Select</option>
+																<option value="FD">LSFD</option>
+																<option value="PD">LSPD</option>
+																<option value="SD">LSSD</option>
+																<option value="PHMC">PHMC</option>
+																<option value="SADCR">SADCR</option>
+																<option value="SANFIRE">SANFIRE</option>
+															</select>
+														</div>
+														<div class="form-group">
+															<label for="coronerbadge">Coroner Serial Number</label>
+															<input type="text" id="coronerbadge" class="form-control" placeholder="Coroner(s) Serial Numbers">
+															</div>
+															<div class="form-group">
+																<label for="victimname">Victim</label>
+																<input type="text" id="victimname" class="form-control" placeholder="John Doe">
+																</div>
+																<div class="form-group">
+																	<label for="victimnameooc">Victim Name ((OOC))</label>
+																	<input type="text" id="victimnameooc" class="form-control" placeholder="John Doe">
+																	</div>
+																	<div class="form-group">
+																		<label for="timeofdeath">Pronounced Time of Death</label>
+																		<input type="text" id="timeofdeath" style="text-transform: uppercase;" class="form-control" placeholder="HH:MM">
+																		</div>
+																		<div class="form-group">
+																			<label for="placeofdeath">Place of Death</label>
+																			<input type="text" id="placeofdeath" class="form-control" placeholder="Los Santos">
+																			</div>
+																			<div class="form-group">
+																				<label for="causeofdeath">Probable Cause of Death</label>
+																				<textarea class="form-control" id="causeofdeath"></textarea>
+																			</div>
+																			<div class="form-group">
+																				<label for="mannerofdeath">Manner of Death</label>
+																				<select class="form-control" id="mannerofdeath">
+																					<option value="" selected="" disabled="">Please Select</option>
+																					<option value="N">Natural</option>
+																					<option value="A">Accident</option>
+																					<option value="S">Suicide</option>
+																					<option value="H">Homicide</option>
+																					<option value="U">Undetermined</option>
+																				</select>
+																			</div>
+																			<div class="form-group">
+																				<label for="narrative">Synopsis</label>
+																				<textarea class="form-control" id="narrative"></textarea>
+																			</div>
+																			<div class="form-group">
+																				<label for="images">Scene Photography (Split with comma)</label>
+																				<textarea class="form-control" id="images"></textarea>
+																			</div>
+																			<div class="form-group">
+																				<label for="morguescreen">Morgue Screen, CInjuries, CDNA Screenshots (Split with comma)</label>
+																				<textarea class="form-control" id="morguescreen"></textarea>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="card mt-2">
+																		<div class="card-body">
+																			<h5 class="card-title">Useful Links</h5>
+																			<ul class="list-style">
+																				<li>
+																					<a target="_blank" href="https://imgur.com">Imgur</a>
+																				</li>
+																			</ul>
+																		</div>
+																	</div>
+																</div>
+																<div class="col-md-6">
+																	<div class="card">
+																		<button class="btn btn-secondary mt-3" onclick="copy_data(bbtitle)">Copy Title</button>
+																		<button class="btn btn-primary mt-3" onclick="copy_data(bbcode)">Copy Code</button>
+																		<div class="card-body">
+																			<h5 class="card-title">Report Title</h5>
+																			<p id="bbtitle">[
+																				<span id="deathText1">CK</span>] - 
+																				<span id="victimText1">JOHN DOE</span> ((
+																				<span id="victimnameoocText">JOHN DOE</span>)) - 
+																				<span id="datetimetext1">02/SEP/2025</span>
+																			</p>
+																			<h5 class="card-title">Copy BBcode</h5>
+																			<p id="bbcode">
+                            [divbox=white][img]https://i.imgur.com/Hxjt4M2.png[/img]
+																				<br>
+                            [aligntable=right,0,000,0,0,0,transparent][size=90]OPERATIONS DIVISION
+                            DECEDENT SERVICES
+																					<br>
+                            [hr][/hr]
+                            [/aligntable]
 
-        // General live update function
-        function bindUpdate(inputId, targetId) {
-            $("#" + inputId).on("input", function() {
-                $("#" + targetId).text($(this).val());
+                            [center] DEATH INVESTIGATION REPORT[/center]
+                            [hr][/hr]
+
+                            [center][b]A. WRITTEN REPORT[/b][/center]
+
+                            [list=none][color=transparent]spacer[/color]
+                            The County Coroner's Office has been called regarding the decease that occurred at the location of [b]
+																						<span id="placeofdeathText"></span>[/b]. Upon receiving the call from the [b]
+																						<span id="requestingagencyText"></span>[/b], Coroner's Office dispatched a 
+																						<span id="jobText1"></span> to the crime scene to conduct an investigation on the [b]
+																						<span id="datetimetext2"></span>[/b] at [b]
+																						<span id="timeText"></span>[/b].
+																						<br>
+																							<br>
+																								<span id="jobText2"></span>, [b]
+																								<span id="coronertext"></span>[/b], Serial Number [b]
+																								<span id="badgetext"></span>[/b], arrived at the scene and identified the individual as [b]
+																								<span id="victimText2"></span>[/b], who was pronounced dead at [b]
+																								<span id="timeofdeathText"></span>[/b]. Following an initial investigation, The 
+																								<span id="jobText3"></span> came up with the following [b]synopsis[/b]: 
+																								<span id="narrativeText"></span>
+																								<br>
+																									<br>
+                            Based on the information gathered from the scene investigation and the decedent's medical history (if available), the probable cause of death was determined to be [b]
+																										<span id="causeofdeathText"></span>[/b]. The manner of death was classified as [b]
+																										<span id="mannerofdeathText"></span>[/b].
+																										<br>
+																											<br>
+                            [/list]
+
+                            [list=none][color=transparent]spacer[/color][center][b]B. PHOTOGRAPHIC DOCUMENTARY RECORD[/b][/center]
+
+                            [customspoiler=SCENE PHOTOGRAPHY]
+                            
+																												<span id="imgs"></span>[/customspoiler]
+
+                            [divbox=transparent][center][color=Black][size=85][b][u](( OUT OF CHARACTER ))[/u][/b][/size][/center][/color][hr][/hr]
+                            [size=75] This section clarifies whether or not if the player was character killed or player killed. 
+                            In this case the player was; 
+																												<span id="deathText2"></span>
+																												<br>
+																													<br>
+
+                            [morgue screen, cinjuries, cdna links:]
+																														<br>
+																															<span id="morguescreenText"></span>[/size][/divbox]
+
+                            [center][b]C. STATEMENT[/b][/center]
+
+                            [divbox=transparent][center][color=Black][size=85]As a 
+																															<span id="jobText4"></span>, I have made detailed notes of my findings and conclusions, and these notes are available for review if necessary. However, I must note that these notes do not contain any personal opinions and are solely based on the evidence and facts available to me.
+
+                            In conclusion, I hope that this report provides the necessary information required for the agency to move forward with any necessary actions. Please let me know if you require any additional information or if I can be of further assistance.
+
+                            I certify that the information contained in this report is true and accurate to the best of my knowledge and belief. I have reviewed the report and ensured that all information included is complete and accurate. [/size][/divbox]
+
+                            [center][b]D. PRIVACY AND CONFIDENTIALITY[/b][/center]
+
+                            [divbox=transparent][center][color=Black][size=85]This document from the Department of Medical Examiner-Coroner certifies the authenticity of the information contained within. Any unauthorized distribution or use of this information is in violation of the Health Insurance Portability and Accountability Act (HIPAA), as well as state and federal privacy laws, including but not limited to the San Andreas Confidentiality of Medical Information Act (CMIA) and the San Andreas Information Practices Act (IPA).
+
+                            It is imperative that all parties handling this document respect the privacy and confidentiality of the decedent and their family. Any violation of these laws may result in legal action being taken against the responsible parties.
+
+                            This document is provided for official purposes only and is not to be construed as legal advice or medical diagnosis. If additional information or clarification is needed, please contact the Department of Medical Examiner-Coroner.[/size][/divbox]
+                        
+																														</p>
+																														<button class="btn btn-secondary mt-3" onclick="copy_data(bbtitle)">Copy Title</button>
+																														<button class="btn btn-primary mt-3" onclick="copy_data(bbcode)">Copy Code</button>
+																													</div>
+																												</div>
+																											</div>
+																										</div>
+																										<p>Coded with Love by ThePlod</p>
+																									</div>
+																									<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+																									<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+																									<script>
+        $(document).ready(function(){
+            var date = moment.utc();
+            var currentDate2 = date.format('DD/MMM/YYYY').toUpperCase();
+            document.getElementById('datetime').value = currentDate2;
+            $("#datetimetext1").text(currentDate2);
+            $("#datetimetext2").text(currentDate2);
+
+            $("#coronername").on("change keypress input", function() {
+                var coronertext = $("#coronername").val();
+                $("#coronertext").text(coronertext);
+            });  
+
+            $("#victimname").on("change keypress input", function() {
+                var victimText = $("#victimname").val();
+                $("#victimText1").text(victimText);
+                $("#victimText2").text(victimText);
+            });  
+
+            $("#victimnameooc").on("change keypress input", function() {
+                var victimnameoocText = $("#victimnameooc").val();
+                $("#victimnameoocText").text(victimnameoocText);
+            });  
+
+            $("#placeofdeath").on("change keypress input", function() {
+                var placeofdeathText = $("#placeofdeath").val();
+                $("#placeofdeathText").text(placeofdeathText);
+            });  
+
+            $("#coronerbadge").on("change keypress input", function() {
+                var badgetext = $("#coronerbadge").val();
+                $("#badgetext").text(badgetext);
+            }); 
+
+            $("#datetime").on("change keypress input", function() {
+                var datetimetext = $("#datetime").val();
+                $("#datetimetext").text(datetimetext);
             });
-        }
 
-        bindUpdate("coronername", "coronertext");
-        bindUpdate("victimname", "victimText1");
-        bindUpdate("victimname", "victimText2");
-        bindUpdate("victimnameooc", "victimnameoocText");
-        bindUpdate("placeofdeath", "placeofdeathText");
-        bindUpdate("coronerbadge", "badgetext");
-        bindUpdate("datetime", "datetimetext1");
-        bindUpdate("datetime", "datetimetext2");
-        bindUpdate("time", "timeText");
-        bindUpdate("timeofdeath", "timeofdeathText");
-        bindUpdate("causeofdeath", "causeofdeathText");
+            $("#time").on("change keypress input", function() {
+                var timeText = $("#time").val();
+                $("#timeText").text(timeText);
+            });
 
-        // Narrative textarea
-        $("#narrative").on("input", function(){
-            $("#narrativeText").text($(this).val());
+            $("#timeofdeath").on("change keypress input", function() {
+                var timeofdeathText = $("#timeofdeath").val();
+                $("#timeofdeathText").text(timeofdeathText);
+            });
+
+            $("#causeofdeath").on("change keypress input", function() {
+                var causeofdeathText = $("#causeofdeath").val();
+                $("#causeofdeathText").text(causeofdeathText);
+            });
+            const selectType = document.querySelector('#typeofdeath');
+            selectType.addEventListener('change', (event) => {
+                var typeValue = event.target.value
+                //$("#typeofdeath").text(typeValue);
+
+                if(typeValue == 'CK') {
+                    $("#deathText1").text("CK");
+                    $("#deathText2").text("CK");
+                }
+                if(typeValue == 'PK') {
+                    $("#deathText1").text("PK");
+                    $("#deathText2").text("PK");
+                }
+            });
+            const selectType2 = document.querySelector('#jobtitle');
+            selectType2.addEventListener('change', (event) => {
+                var typeValue2 = event.target.value
+                //$("#jobtitle").text(typeValue2);
+
+                if(typeValue2 == 'F') {
+                    $("#jobText1").text("Forensic Attendant");
+                    $("#jobText2").text("Forensic Attendant");
+                    $("#jobText3").text("Forensic Attendant");
+                    $("#jobText4").text("Forensic Attendant");
+                }
+                if(typeValue2 == 'C') {
+                    $("#jobText1").text("Coroner Investigator");
+                    $("#jobText2").text("Coroner Investigator");
+                    $("#jobText3").text("Coroner Investigator");
+                    $("#jobText4").text("Coroner Investigator");
+                }
+                if(typeValue2 == 'M') {
+                    $("#jobText1").text("Medical Examiner");
+                    $("#jobText2").text("Medical Examiner");
+                    $("#jobText3").text("Medical Examiner");
+                    $("#jobText4").text("Medical Examiner");
+                }
+            });
+            const selectType3 = document.querySelector('#mannerofdeath');
+            selectType3.addEventListener('change', (event) => {
+                var typeValue3 = event.target.value
+                //$("#mannerofdeath").text(typeValue3);
+
+                if(typeValue3 == 'N') {
+                    //$("#mannerofdeathText").text("Natural");
+                    for (let i = 0; i < 3; i++) {
+                        mannerofdeathText[i] = "Natural";
+                        $("#mannerofdeathText[i]").text("Natural");
+                        console.log(mannerofdeathText[i]);
+                    }
+                }
+                if(typeValue3 == 'A') {
+                    $("#mannerofdeathText").text("Accident");
+                }
+                if(typeValue3 == 'S') {
+                    $("#mannerofdeathText").text("Suicide");
+                }
+                if(typeValue3 == 'H') {
+                    $("#mannerofdeathText").text("Homicide");
+                }
+                if(typeValue3 == 'U') {
+                    $("#mannerofdeathText").text("Undetermined");
+                }
+            });
+            const selectType4 = document.querySelector('#requestingagency');
+            selectType4.addEventListener('change', (event) => {
+                var typeValue4 = event.target.value
+                //$("#jobtitle").text(typeValue2);
+
+                if(typeValue4 == 'FD') {
+                    $("#requestingagencyText").text("Los Santos Fire Department");
+                }
+                if(typeValue4 == 'PD') {
+                    $("#requestingagencyText").text("Los Santos Police Department");
+                }
+                if(typeValue4 == 'SD') {
+                    $("#requestingagencyText").text("Los Santos Sheriff's Department");
+                }
+                if(typeValue4 == 'PR') {
+                    $("#requestingagencyText").text("San Andreas Park Rangers");
+                }
+                if(typeValue4 == 'PHMC') {
+                    $("#requestingagencyText").text("Pillbox Hill Medical Center");
+                }
+            });
+            document.querySelector('#narrative').addEventListener('keyup', function() {
+                document.querySelector('#narrativeText').innerText = this.value;
+            });
+            $("#images").on("change keypress input", function() {
+                var imgs = $("#images").val();
+                var imgss = imgs.split(","), i;
+                var allimgs = "";
+                for (i = 0; i< imgss.length; i++) {
+                    var newimg = "[img]";
+                    newimg += imgss[i];
+                    newimg += "[/img]";
+                    allimgs += newimg;
+                }
+                $("#imgs").text(allimgs);
+            });
+            $("#morguescreen").on("change keypress input", function() {
+                var imgs = $("#morguescreen").val();
+                var imgss = imgs.split(","), i;
+                var allimgs = "";
+                for (i = 0; i< imgss.length; i++) {
+                    var newimg = "[img]";
+                    newimg += imgss[i];
+                    newimg += "[/img]";
+                    allimgs += newimg;
+                }
+                $("#morguescreenText").text(allimgs);
+            });     
+        }); 
+
+        window.addEventListener('change', event => {
         });
-
-        // Scene Photography
-        $("#images").on("input", function(){
-            let allimgs = $(this).val().split(",").map(i => `[img]${i.trim()}[/img]`).join("");
-            $("#imgs").text(allimgs);
-        });
-
-        // Morgue screen
-        $("#morguescreen").on("input", function(){
-            let allimgs = $(this).val().split(",").map(i => `[img]${i.trim()}[/img]`).join("");
-            $("#morguescreenText").text(allimgs);
-        });
-
-        // Type of Death
-        $("#typeofdeath").on("change", function(){
-            let v = $(this).val();
-            $("#deathText1, #deathText2").text(v);
-        });
-
-        // Job title
-        $("#jobtitle").on("change", function(){
-            let roles = {
-                "F": "Forensic Attendant",
-                "C": "Coroner Investigator",
-                "M": "Medical Examiner"
-            };
-            let r = roles[$(this).val()];
-            $("#jobText1, #jobText2, #jobText3, #jobText4").text(r);
-        });
-
-        // Manner of Death
-        $("#mannerofdeath").on("change", function(){
-            let modes = {
-                "N": "Natural",
-                "A": "Accident",
-                "S": "Suicide",
-                "H": "Homicide",
-                "U": "Undetermined"
-            };
-            $("#mannerofdeathText").text(modes[$(this).val()]);
-        });
-
-        // Requesting Agency
-        $("#requestingagency").on("change", function(){
-            let agencies = {
-                "FD": "Los Santos Fire Department",
-                "PD": "Los Santos Police Department",
-                "SD": "Los Santos Sheriff's Department",
-                "PR": "San Andreas Park Rangers",
-                "PHMC": "Pillbox Hill Medical Center"
-            };
-            $("#requestingagencyText").text(agencies[$(this).val()]);
-        });
-    });
-
-    // Fix copy to include plain text with line breaks
-    function copy_data(containerid) {
-        let el = (typeof containerid === "string") ? document.getElementById(containerid) : containerid;
-        let text = el.innerText.replace(/\u00A0/g, " "); // clean nbsp
-        navigator.clipboard.writeText(text).then(() => {
+        function copy_data(containerid) {
+            var range = document.createRange();
+            range.selectNode(containerid); //changed here
+            window.getSelection().removeAllRanges(); 
+            window.getSelection().addRange(range); 
+            document.execCommand("copy");
+            window.getSelection().removeAllRanges();
             alert("BBCode Copied");
-        });
-    }
-</script>
+        }
+    
+																									</script>
+																								</body>
+																							</html>
